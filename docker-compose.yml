@@ -1,11 +1,18 @@
-version: '3'
+version: '3.6'
 services:
-  web:
-    build: .
-    ports:
-      - "3000:3000"
+  api:
+    container_name: api-social-media
+    build:
+      context: ./
+      dockerfile: Dockerfile
     volumes:
-      - .:/app
+      - ./:/api-root/src
+    healthcheck:
+      disable: true
+    restart: unless-stopped
+    ports:
+      - 3001:3001
+    tty: true
   db:
     image: mongo:latest
     ports:
