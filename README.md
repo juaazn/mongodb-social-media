@@ -22,20 +22,6 @@ This project is a backend application built with Node.js and Mongoose. The appli
 3. Configure your MongoDB connection in the .env file.
 4. Start the server with npm start.
 
-## Appendix
-
-This project is deployed on [Render](https://render.com/) with Docker
-
-## Demo
-
-https://mongodb-social-media.onrender.com/post/getAll
-
-
-## Authors
-
-- [@Chuans_](https://github.com/juaazn)
-
-
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
@@ -51,6 +37,20 @@ To run this project, you will need to add the following environment variables to
 `MONGO_PASSWORD`
 
 `MONGO_DATABASE`
+
+## Appendix
+
+This project is deployed on [Render](https://render.com/) with Docker
+
+## Demo
+
+https://mongodb-social-media.onrender.com/post/getAll
+
+
+## Authors
+
+- [@Chuans_](https://github.com/juaazn)
+
 
 ## 🚀 About Me
 I'm a full stack developer passionate about building robust backend solutions. My expertise lies in creating scalable applications using Express.js and MongoDB with Mongoose, as demonstrated in projects like this one. I enjoy tackling challenges and implementing efficient solutions that enhance user experiences.
