@@ -11,9 +11,9 @@ dbConnection()
 app.use(express.json())
 const PORT = process.env.PORT || 3000
 
-app.use('/post', post)
-app.use('/user', user)
-app.use('/comments', comments)
+app.use('/api/post', post)
+app.use('/api/user', user)
+app.use('/api/comments', comments)
 
 app.use(typeError)
 
