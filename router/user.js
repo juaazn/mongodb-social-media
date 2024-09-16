@@ -8,6 +8,7 @@ const user = express.Router()
 user.get('/get/:_id', authentication, UserController.getUser)
 user.post('/create', typeError, UserController.create)
 user.post('/login', UserController.login)
+user.post('/following/:_id', authentication ,UserController.follow)
 user.delete('/logout/:_id', authentication, UserController.logout)
 
 export default user
