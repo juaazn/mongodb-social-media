@@ -3,7 +3,7 @@ import { CloudinaryStorage } from 'multer-storage-cloudinary'
 import multer from 'multer'
 
 cloudinary.config({
-  account_id: process.env.CLOUD_NAME,
+  cloud_name: process.env.CLOUD_NAME,
   api_key: process.env.API_KEY,
   api_secret: process.env.API_SECRET
 })
@@ -11,7 +11,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: 'ecommerce',
+    folder: (req, file) => 'ecommerce',
   }
 })
 
