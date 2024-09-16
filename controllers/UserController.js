@@ -68,7 +68,7 @@ const UserController = {
     try {
       const userId = req.user._id
       const userToFollow = req.params._id
-      console.log(req.user._id)
+
       if (userId === null && userToFollow === null) return res.status(400).send({ message: 'Usuario no exite' })
       if (userToFollow === userId) return res.status(400).send({ message: 'No puedes seguirte a ti mismo' })
         
@@ -83,6 +83,24 @@ const UserController = {
     } catch (error) {
       console.error(error)
       res.status(500).send({ message: `Server internal error follow: ${error}` })
+    }
+  },
+  async unfollow (req, res) {
+    try {
+      const userId = req.user._id
+      const userIdToUnfollow = req.params._id
+      if (userId === null && userIdToUnfollow === null) return res.status(400).send({ message: 'Usuario no exite' })
+
+      const currentUser = await User.findById(userId)
+      if (!currentUser) return res.status(400).send({ message: 'Usuario no encontrado' })
+
+      currentUser.following = currentUser.following.filter(followId => followId.toString() !== userIdToUnfollow )
+      currentUser.save()
+
+      res.status(200).send({ message: 'unfollow' })
+    } catch (error) {
+      console.log(error)
+      res.status(500).send({ message: `Server internal error unfollow: ${error}` })
     }
   }
 }
