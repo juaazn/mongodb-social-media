@@ -4,6 +4,6 @@ import CloudinaryController from '../controllers/CloudinaryController.js'
 
 const cloudinary = express.Router()
 
-cloudinary.post('/', upload.single('picture'), CloudinaryController.upload)
+cloudinary.post('/image', upload.single('picture'), CloudinaryController.upload)
 
 export default cloudinary
