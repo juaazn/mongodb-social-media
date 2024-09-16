@@ -13,7 +13,7 @@
   "description": "Ejercicio con MongoDB",
   "dependencies": {
     "bcryptjs": "2.4.3",
-    "cloudinary": "^2.4.0",
+    "cloudinary": "^1.21.0",
     "dotenv": "16.4.5",
     "express": "^4.20.0",
     "jsonwebtoken": "9.0.2",
