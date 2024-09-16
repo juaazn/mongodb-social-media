@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary'
 import { CloudinaryStorage } from 'multer-storage-cloudinary'
-import multer from 'multer';
+import multer from 'multer'
 
 cloudinary.config({
   account_id: process.env.CLOUD_NAME,
@@ -9,7 +9,7 @@ cloudinary.config({
 })
 
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
+  cloudinary,
   params: {
     folder: 'ecommerce',
   }
