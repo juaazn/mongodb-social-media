@@ -74,6 +74,7 @@ const PostController = {
       const { _id } = req.params
 
       const post = await Post.findById(_id)
+      if (!post) return res.status(400).send({ message: 'post no encontrado' })
       
       res.status(200).send(post)
     } catch (error) {
