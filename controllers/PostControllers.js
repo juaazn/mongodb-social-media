@@ -71,8 +71,11 @@ const PostController = {
   },
   async getById(req, res) {
     try {
-      const product = await Post.findById(req.params._id)
-      res.send(product)
+      const { _id } = req.params
+
+      const post = await Post.findById(_id)
+      
+      res.status(200).send(post)
     } catch (error) {
       console.error(error)
     }
