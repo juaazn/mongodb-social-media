@@ -2,6 +2,7 @@ import 'dotenv/config'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import User from '../models/User.js'
+import user from '../router/user.js'
 
 const UserController = {
   async create(req, res, next) {
@@ -57,10 +58,31 @@ const UserController = {
   async getUser(req, res) {
     try {
       const user = await User.findById(req.params._id)
-      res.send(user)
+      res.status(200).send(user)
     } catch (error) {
       res.send({ message: "Error al obtener el usuario" })
       console.error(error)
+    }
+  },
+  async follow (req, res) {
+    try {
+      const userId = req.user._id
+      const userToFollow = req.params._id
+      console.log(req.user._id)
+      if (userId === null && userToFollow === null) return res.status(400).send({ message: 'Usuario no exite' })
+      if (userToFollow === userId) return res.status(400).send({ message: 'No puedes seguirte a ti mismo' })
+        
+      const currentUser = await User.findById(userId)
+      if (!currentUser) return res.status(400).send({ message: 'Usuario no encontrado' })
+      if (currentUser.following.includes(userToFollow)) return res.status(400).send({ message: 'Ya sigues a este usuario' })
+
+      currentUser.following.push(userToFollow)
+      await currentUser.save()
+
+      res.status(200).send({ message: 'Following' })
+    } catch (error) {
+      console.error(error)
+      res.status(500).send({ message: `Server internal error follow: ${error}` })
     }
   }
 }
