@@ -7,22 +7,28 @@ const PostController = {
     
     const userName = await User.findById({ _id: req.params._id })
     
-    if (userName._id.toString() !== req.params._id) throw new Error('El usuario no existe')
+    if (userName._id.toString() !== req.params._id) return res.status(400).send({ message: 'Usuario no registrado' })
     const { title, body } = req.body
+
+    if (!req.file || !req.file.path) return res.status(400).send({ message: 'No se subió ningún archivo' })
+      
+    const objectImage = req.file
 
     const post = await Post.create({
       userId: userName._id,
       userName: userName.name, 
       title,
+      image: objectImage,
       body,
     })
 
-     res.status(201).send({ message: `Post creado correctamente${post}` })
+     res.status(201).send(
+      { message: 'Post creado, correctamete', 
+        post: post,
+        image: objectImage })
    } catch (error) {
      console.error(error)
-     res
-       .status(500)
-       .send({ message: 'Ha habido un problema al crear el post' })
+     res.status(500).send({ message: 'Ha habido un problema al crear el post' })
    }
  },
   async like(req, res) {
