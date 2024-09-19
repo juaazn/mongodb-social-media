@@ -3,6 +3,10 @@ const ObjectId = mongoose.SchemaTypes.ObjectId
 const UserName = mongoose.SchemaTypes.String
 
 const CommentsScheme = new mongoose.Schema({
+  userId: {
+    type: ObjectId,
+    ref: 'User'
+  },
   userName: {
     type: UserName,
     ref: 'User'
