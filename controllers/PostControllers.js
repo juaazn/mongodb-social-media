@@ -5,9 +5,9 @@ const PostController = {
  async create(req, res) {
    try {
     
-    const userName = await User.findById({ _id: req?.params?._id })
+    const userName = await User.findById({ _id: req.params._id })
     
-    if (userName._id.toString() !== req.params?._id) throw new Error('El usuario no existe')
+    if (userName._id.toString() !== req.params._id) throw new Error('El usuario no existe')
     const { title, body } = req.body
 
     const post = await Post.create({
