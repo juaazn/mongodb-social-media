@@ -1,6 +1,6 @@
 import express from 'express'
 import PostController from '../controllers/PostControllers.js'
-import { upload } from '../cloudinary/config.js'
+import { upload } from '../utils/cloudinary.js'
 
 import { authentication, isAuthor } from '../middlewares/authentication.js'
 import { typeError } from '../middlewares/errors.js'
