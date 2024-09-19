@@ -2,6 +2,7 @@ import 'dotenv/config'
 import User from '../models/User.js'
 import jwt from 'jsonwebtoken'
 import Post from '../models/Post.js'
+import Comments from '../models/Comments.js'
 
 export const authentication = async (req, res, next) => {
  try {
@@ -25,6 +26,20 @@ export const isAuthor = async (req, res, next) => {
 
     if (posts.userId.toString() !== req.user._id.toString()) {
       return res.status(403).send({ message: 'Este Post no es tuyo' })
+    }
+    next()
+  } catch (error) {
+    console.error(error)
+    return res.status(500).send({ error, message: 'Ha habido un problema al comprobar la autoría del post'})
+  }
+ }
+
+ export const isAuthorComments = async (req, res, next) => {
+  try {
+    const comments = await Comments.findById(req.params._id)
+
+    if (comments.userId.toString() !== req.user._id.toString()) {
+      return res.status(403).send({ message: 'Este Comentario no es tuyo' })
     }
     next()
   } catch (error) {
