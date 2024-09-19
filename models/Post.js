@@ -16,6 +16,10 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Por favor escriba un titulo'],
     },
+    image: {
+      type: String,
+      require: [true, 'Por fa, sube una imagen']
+    },
     body: {
       type: String,
       required: [true, 'Tiene que escribir algo, para poder publicar un post'],
