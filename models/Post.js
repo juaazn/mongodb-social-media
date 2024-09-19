@@ -17,7 +17,8 @@ const PostSchema = new mongoose.Schema(
       required: [true, 'Por favor escriba un titulo'],
     },
     image: {
-      type: String,
+      type: Map,
+      of: String,
       require: [true, 'Por fa, sube una imagen']
     },
     body: {
