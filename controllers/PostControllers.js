@@ -1,5 +1,6 @@
 import Post from '../models/Post.js'
 import User from '../models/User.js'
+import { destroyImage } from '../utils/cloudinary.js'
 
 const PostController = {
  async create(req, res) {
@@ -106,7 +107,16 @@ const PostController = {
   },
   async delete(req, res) {
     try {
-      const product = await Post.findByIdAndDelete(req.params._id)
+      const { _id } = req.params
+
+      if (!_id) return res.status(400).send({ message: 'Fallo al obtener req.params' })
+      const post = await Post.findById(_id)
+
+      const imageCode = post.image.get('filename')
+      if (!imageCode) return res.status(400).send({ message: 'Imagen no encontrada' })
+      destroyImage(imageCode)
+
+      const product = await Post.findByIdAndDelete(_id)
       res.status(204).send({ product, message: 'Post deleted' })
     } catch (error) {
       console.error(error)
