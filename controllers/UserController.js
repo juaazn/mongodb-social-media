@@ -32,9 +32,11 @@ const UserController = {
       const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET)
       
       if (user.tokens.length > 4) user.tokens.shift()
+
       user.tokens.push(token)
       await user.save()
-      res.send({ message: 'Bienvenid@ ' + user.name, token })
+      
+      res.send({ message: `Bienvenid@ ${user.name}`, user })
     } catch (error) {
       console.error(error)
       res.status(500).send({
