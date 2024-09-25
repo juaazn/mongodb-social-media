@@ -5,7 +5,7 @@ import { typeError } from '../middlewares/errors.js'
 
 const user = express.Router()
 
-user.get('/get/:_id', authentication, UserController.getUser)
+user.get('/get-id', authentication, UserController.getUserById)
 user.post('/create', typeError, UserController.create)
 user.post('/login', UserController.login)
 user.post('/following/:_id', authentication ,UserController.follow)
