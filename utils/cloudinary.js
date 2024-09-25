@@ -15,8 +15,13 @@ const storage = new CloudinaryStorage({
   }
 })
 
-export async function destroyImage (img_id) {
-  await cloudinary.uploader.destroy(img_id)
+export async function destroyImage (public_id) {
+  try {
+    await cloudinary.uploader.destroy(public_id)
+  } catch (error) {
+    console.error('Error eliminando imagen en Cloudinary:', error)
+    throw new Error('Error eliminando la imagen en Cloudinary')
+  }
 }
 
 export const upload =  multer({ storage })
