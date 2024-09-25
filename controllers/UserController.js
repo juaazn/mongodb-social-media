@@ -2,7 +2,6 @@ import 'dotenv/config'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import User from '../models/User.js'
-import user from '../router/user.js'
 
 const UserController = {
   async create(req, res, next) {
@@ -57,15 +56,6 @@ const UserController = {
       })
     }
   },
-  async getUser(req, res) {
-    try {
-      const user = await User.findById(req.params._id)
-      res.status(200).send(user)
-    } catch (error) {
-      res.send({ message: "Error al obtener el usuario" })
-      console.error(error)
-    }
-  },
   async follow (req, res) {
     try {
       const userId = req.user._id
@@ -103,6 +93,18 @@ const UserController = {
     } catch (error) {
       console.log(error)
       res.status(500).send({ message: `Server internal error unfollow: ${error}` })
+    }
+  },
+  async getUserById (req, res) {
+    try {
+      const _id = req.user._id
+      const user = await User.findById(_id)
+
+      if (!user) return res.status(400).send({ message: 'User not found' })
+      res.status(200).send(user)
+    } catch (error) {
+      console.error(error)
+      res.status(500).send({ message: `Server internal error getUserById: ${error}` })
     }
   }
 }
