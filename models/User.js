@@ -16,7 +16,12 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Por favor rellena tu contraseña'],
     },
-    profileImage: Map,
+    profileImage: {
+      type: Map,
+      of: String,
+      require: [true, 'Please, upload image']
+
+    },
     age: {
       type: Number,
       required: [true, 'Por favor rellena tu edad'],
