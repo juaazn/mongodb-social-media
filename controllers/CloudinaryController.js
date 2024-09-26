@@ -27,7 +27,7 @@ const CloudinaryController = {
 
       await user.save()
 
-      res.status(200).json({ user: user })
+      res.status(200).json(user)
     } catch (error) {
       console.error('Error en el controlador Cloudinary: ', error)
       res.status(500).send({ message: `Error cloudinary internal server: ${error}` })
