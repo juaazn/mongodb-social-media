@@ -27,7 +27,8 @@ const UserSchema = new mongoose.Schema(
       required: [true, 'Por favor rellena tu edad'],
     },
     tokens: [],
-    following: [{type: mongoose.Types.ObjectId, ref: 'users'}]
+    following: [{type: mongoose.Types.ObjectId, ref: 'users'}],
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }]
   },
   {
     timestamps: true
