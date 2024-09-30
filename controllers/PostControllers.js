@@ -9,10 +9,9 @@ const PostController = {
     const user = await User.findById(_id)
     
     if (!user) return res.status(400).send({ message: 'Usuario no registrado' })
-    const { body } = req.body
-
-    if (!req.file || !req.file.path) return res.status(400).send({ message: 'No se subió ningún archivo' })
-    const objectImage = req.file
+      const { body } = req.body
+    
+    const objectImage = req.file || null
 
     const post = await Post.create({
       image: objectImage,
@@ -31,29 +30,47 @@ const PostController = {
   async like(req, res) {
     try {
       const { _id } = req.params
-      const userName = await User.findById({ _id: req.query?._id })
-      const { like } = req.body
+      const user = req.user._id
+      const { isLike } = req.body
+  
+      const post = await Post.findById(_id);
+      if (!post) return res.status(404).send({ message: 'Post no encontrado' })
+  
+      const existingLike = post.like.find(like => like.user.toString() === user.toString())
+  
+      if (existingLike) {
+        existingLike.isLike = isLike;
+      } else {
+        post.like.push({ user, isLike });
+      }
 
-      await Post.findByIdAndUpdate(_id, { $push: { like: [{ userId: userName._id, userName: userName.name, isLike: like }] } }, { new: true })
+      await post.save();
 
-      res.status(200).send({ message: `Check ${like}` })
+      res.status(200).send({ message: 'Like save', post })
     } catch (err) {
       console.error(err)
-      res
-       .status(500)
-       .send({ message: 'Error al guardar Like' })
+      res.status(500).send({ message: 'Error like' })
     }
   },
   async disLike(req, res) {
     try {
-      const { postId } = req.query
-      const { userId } = req.params
-
-      await Post.findByIdAndDelete(postId, {
-        $pull: { like: { userId } }
-      })
-
-      res.status(204).send({ message: 'Deleted' })
+      const { _id } = req.params
+      const user = req.user._id
+      const { isLike } = req.body
+  
+      const post = await Post.findById(_id);
+      if (!post) return res.status(404).send({ message: 'Post no encontrado' });
+  
+      const userLike = post.like.find(like => like.user.toString() === user.toString());
+  
+      if (userLike) {
+        userLike.isLike = isLike;
+        await post.save();
+  
+        res.status(200).send({ message: 'Like actualizado a dislike', post });
+      } else {
+        res.status(400).send({ message: 'Este usuario no ha dado like a este post' });
+      }
     } catch (err) {
       console.error(err)
       res
