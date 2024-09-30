@@ -98,7 +98,7 @@ const UserController = {
   async getUserById (req, res) {
     try {
       const _id = req.user._id
-      const user = await User.findById(_id)
+      const user = await User.findById(_id).populate('posts')
 
       if (!user) return res.status(400).send({ message: 'User not found' })
       res.status(200).send(user)
