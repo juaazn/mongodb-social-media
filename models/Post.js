@@ -6,7 +6,7 @@ const PostSchema = new mongoose.Schema(
     image: {
       type: Map,
       of: String,
-      require: [true, 'Por fa, sube una imagen']
+      require: false
     },
     body: {
       type: String,
