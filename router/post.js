@@ -14,6 +14,6 @@ posts.post('/create/', upload.single('picture'), authentication, typeError, Post
 posts.post('/like/:_id', authentication, PostController.like)
 posts.put('/update/:_id', authentication, isAuthor, PostController.update)
 posts.delete('/delete/:_id', authentication, isAuthor, PostController.delete)
-posts.delete('/deleteLike/:userId', authentication, PostController.disLike)
+posts.delete('/deleteLike/:_id', authentication, PostController.disLike)
 
 export default posts
