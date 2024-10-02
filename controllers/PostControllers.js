@@ -33,49 +33,53 @@ const PostController = {
       const user = req.user._id
       const { isLike } = req.body
   
-      const post = await Post.findById(_id);
-      if (!post) return res.status(404).send({ message: 'Post no encontrado' })
+      const post = await Post.findOneAndUpdate(
+        { _id, 'like.user': user },
+        { 
+          $set: { 'like.$.isLike': isLike }
+        },
+        { 
+          new: true,
+          upsert: false
+        }
+      )
   
-      const existingLike = post.like.find(like => like.user.toString() === user.toString())
+      if (!post) {
+        const updatedPost = await Post.findByIdAndUpdate(
+          _id,
+          { $push: { like: { user, isLike } } },
+          { new: true }
+        )
   
-      if (existingLike) {
-        existingLike.isLike = isLike;
-      } else {
-        post.like.push({ user, isLike });
+        if (!updatedPost) return res.status(404).send({ message: 'Post no encontrado' })
+        return res.status(200).send({ message: 'Like guardado', post: updatedPost })
       }
-
-      await post.save();
-
-      res.status(200).send({ message: 'Like save', post })
+  
+      res.status(200).send({ message: 'Like actualizado', post })
     } catch (err) {
-      console.error(err)
-      res.status(500).send({ message: 'Error like' })
+      console.error('Error en el controlador like:', err);
+      res.status(500).send({ message: 'Error al procesar el like' })
     }
   },
   async disLike(req, res) {
     try {
       const { _id } = req.params
       const user = req.user._id
-      const { isLike } = req.body
-  
-      const post = await Post.findById(_id);
-      if (!post) return res.status(404).send({ message: 'Post no encontrado' });
-  
-      const userLike = post.like.find(like => like.user.toString() === user.toString());
-  
-      if (userLike) {
-        userLike.isLike = isLike;
-        await post.save();
-  
-        res.status(200).send({ message: 'Like actualizado a dislike', post });
-      } else {
-        res.status(400).send({ message: 'Este usuario no ha dado like a este post' });
+
+      const post = await Post.findOneAndUpdate(
+        { _id },
+        { $pull: { like: { user: user } } },
+        { new: true }
+      )
+
+      if (!post) {
+        return res.status(404).send({ message: 'Post no encontrado' })
       }
+
+      res.status(200).send({ message: 'Like eliminado', post })
     } catch (err) {
-      console.error(err)
-      res
-       .status(500)
-       .send({ message: 'Error al eliminar Like' })
+      console.error('Error en el controlador disLike:', err)
+      res.status(500).send({ message: 'Error al eliminar el like' })
     }
   },
   async getAll(req, res) {
