@@ -1,19 +1,10 @@
 import mongoose from 'mongoose'
-const ObjectId = mongoose.SchemaTypes.ObjectId
-const UserName = mongoose.SchemaTypes.String
 
 const CommentsScheme = new mongoose.Schema({
-  userId: {
-    type: ObjectId,
-    ref: 'User'
-  },
-  userName: {
-    type: UserName,
-    ref: 'User'
-  },
+  userId: { type: mongoose.SchemaTypes.ObjectId, ref: 'User' },
   body: String,
-  deliveryDate: Date,
- }, { timestamps: true }
+ }, 
+ { timestamps: true }
 )
 
 const Comments = mongoose.model('comments', CommentsScheme)
