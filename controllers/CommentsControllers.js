@@ -5,22 +5,22 @@ import Post from '../models/Post.js'
 const CommentsController = {
   async create(req, res) {
     try {
-      const userName = await User.findById({ _id: req.params?._id })
-      const postId = await  Post.findById({ _id: req.query?._id })
+      const idPost = req.params._id
+      const idUser = req.user._id
+      const user = await User.findById(idUser)
+      const post = await  Post.findById(idPost)
       const { body } = req.body
 
-      if (userName._id.toString() !== req.params?._id) throw 'El usuario no existe'
+      if (user._id.toString() !== req.params._id) return res.status(400).send({ message: 'User not found' })
       
       const comments = await Comments.create({
-        userId: userName,
-        userName: userName.name,
-        body,
-        deliveryDate: new Date().setDate(new Date().getDate() + 2)
+        userId: user,
+        body
       })
       
-      await Post.findByIdAndUpdate(postId._id, { $push: { comments: comments } },)
+      await Post.findByIdAndUpdate(post._id, { $push: { comments: comments } },)
       
-      res.status(201).send(comments)
+      res.status(201).populate('user').send(comments)
     } catch (error) {
       console.error(error)
       res.status(500).send({ message: 'Error al crear el comentario' })
