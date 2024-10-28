@@ -97,7 +97,7 @@ const PostController = {
     try {
       const { _id } = req.params
 
-      const post = await Post.findById(_id)
+      const post = await Post.findById(_id).populate('user')
       if (!post) return res.status(400).send({ message: 'post no encontrado' })
       
       res.status(200).send(post)
