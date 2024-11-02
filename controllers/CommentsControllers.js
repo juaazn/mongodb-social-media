@@ -7,20 +7,17 @@ const CommentsController = {
     try {
       const idPost = req.params._id
       const idUser = req.user._id
-      const user = await User.findById(idUser)
       const post = await  Post.findById(idPost)
       const { body } = req.body
-
-      if (user._id.toString() !== req.params._id) return res.status(400).send({ message: 'User not found' })
       
       const comments = await Comments.create({
-        userId: user,
+        userId: idUser,
         body
       })
-      
+
       await Post.findByIdAndUpdate(post._id, { $push: { comments: comments } },)
       
-      res.status(201).populate('user').send(comments)
+      res.status(201).send(comments)
     } catch (error) {
       console.error(error)
       res.status(500).send({ message: 'Error al crear el comentario' })
